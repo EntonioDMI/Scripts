@@ -15,7 +15,6 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 
 local HighlightEnabled = false
 local TeamCheckEnabled = false
-local autoTeamColorEnabled = false
 local FillColor = Color3.new(1, 0, 0) -- Цвет заполнения
 local OutlineColor = Color3.new(1, 1, 1) -- Цвет обводки
 local FillTransparency = 0.5 -- Прозрачность заполнения
@@ -64,41 +63,30 @@ getgenv().IAHub.Aimbot = {
 local Environment = getgenv().IAHub.Aimbot
 
 -- Функция для проверки цвета команды игрока
-local function isSameTeam(player)
-    if teamCheckEnabled then
-        return player.TeamColor == localPlayer.TeamColor
+local function IsSameTeam(player)
+    if TeamCheckEnabled then
+        return player.TeamColor == LocalPlayer.TeamColor
     end
     return false
 end
 
-local function autoColorTeam(player)
-    if autoTeamColorEnabled then
-        return player.TeamColor
-    end
-    return nil
-end
-
 -- Функция включения/выключения Highlight для всех игроков
-local function toggleHighlight(enable)
-    for _, player in pairs(players:GetPlayers()) do
-        if player ~= localPlayer then
+local function ToggleHighlight(enable)
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
             local character = player.Character or player.CharacterAdded:Wait()
             if character then
                 local highlight = character:FindFirstChild("Highlight")
-                if enable and not isSameTeam(player) then
+                if enable and not IsSameTeam(player) then
                     if not highlight then
                         highlight = Instance.new("Highlight")
                         highlight.Name = "Highlight"
                         highlight.Parent = character
                     end
-                    if autoTeamColorEnabled then
-                        highlight.FillColor = player.TeamColor.Color
-                    else
-                        highlight.FillColor = fillColor
-                    end
-                    highlight.OutlineColor = outlineColor
-                    highlight.FillTransparency = fillTransparency
-                    highlight.OutlineTransparency = outlineTransparency
+                    highlight.FillColor = FillColor
+                    highlight.OutlineColor = OutlineColor
+                    highlight.FillTransparency = FillTransparency
+                    highlight.OutlineTransparency = OutlineTransparency
                 else
                     if highlight then
                         highlight:Destroy()
@@ -312,18 +300,18 @@ Players.PlayerAdded:Connect(function(player)
     end)
 end)
 
-for _, player in pairs(players:GetPlayers()) do
+for _, player in pairs(Players:GetPlayers()) do
     player.CharacterAdded:Connect(function(character)
         if hitboxEnabled then
             expandHitbox(character)
         end
-        toggleHighlight(highlightEnabled)
+        ToggleHighlight(HighlightEnabled)
     end)
     if player.Character then
         if hitboxEnabled then
             expandHitbox(player.Character)
         end
-        toggleHighlight(highlightEnabled)
+        ToggleHighlight(HighlightEnabled)
     end
 end
 
@@ -375,17 +363,6 @@ HighlightSection:AddToggle({
     Value = TeamCheckEnabled,
     Callback = function(value)
         TeamCheckEnabled = value
-        ToggleHighlight(false) -- Отключаем Highlight
-        ToggleHighlight(HighlightEnabled) -- Включаем Highlight заново с обновленными настройками
-    end
-})
-
-HighlightSection:AddToggle({
-    Name = "Auto Team Color",
-    Flag = "HighlightSection_TeamColor",
-    Value = autoTeamColorEnabled,
-    Callback = function(value)
-        autoTeamColorEnabled = value
         ToggleHighlight(false) -- Отключаем Highlight
         ToggleHighlight(HighlightEnabled) -- Включаем Highlight заново с обновленными настройками
     end
