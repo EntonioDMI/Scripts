@@ -342,7 +342,8 @@ local GeneralTab = PepsisWorld:CreateTab({
 })
 
 local HighlightSection = GeneralTab:CreateSection({
-    Name = "Highlight Control"
+    Name = "Highlight Control",
+    Side = "Right"
 })
 
 -- Загрузка кнопок и прочего для Highlight
@@ -472,7 +473,8 @@ HitboxSection:AddDropdown({
 })
 
 local AimbotSettingsSection = GeneralTab:CreateSection({
-    Name = "Aimbot Settings"
+    Name = "Aimbot Settings",
+    Side = "Right"
 })
 
 local FOVSettingsSection = GeneralTab:CreateSection({
