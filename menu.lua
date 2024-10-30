@@ -15,6 +15,7 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 
 local HighlightEnabled = false
 local TeamCheckEnabled = false
+local AutoTeamColorEnabled = false
 local FillColor = Color3.new(1, 0, 0) -- Цвет заполнения
 local OutlineColor = Color3.new(1, 1, 1) -- Цвет обводки
 local FillTransparency = 0.5 -- Прозрачность заполнения
@@ -83,7 +84,11 @@ local function ToggleHighlight(enable)
                         highlight.Name = "Highlight"
                         highlight.Parent = character
                     end
-                    highlight.FillColor = FillColor
+                    if AutoTeamColorEnabled then
+                        highlight.FillColor = player.TeamColor.Color
+                    else
+                        highlight.FillColor = FillColor
+                    end
                     highlight.OutlineColor = OutlineColor
                     highlight.FillTransparency = FillTransparency
                     highlight.OutlineTransparency = OutlineTransparency
@@ -95,6 +100,12 @@ local function ToggleHighlight(enable)
             end
         end
     end
+end
+
+-- Функция включения/выключения Auto Team Color
+local function ToggleAutoTeamColor(enable)
+    AutoTeamColorEnabled = enable
+    ToggleHighlight(HighlightEnabled) -- Обновляем Highlight с учетом новой настройки AutoTeamColor
 end
 
 -- Функции для расширения хитбоксов
@@ -365,6 +376,15 @@ HighlightSection:AddToggle({
         TeamCheckEnabled = value
         ToggleHighlight(false) -- Отключаем Highlight
         ToggleHighlight(HighlightEnabled) -- Включаем Highlight заново с обновленными настройками
+    end
+})
+
+HighlightSection:AddToggle({
+    Name = "Auto Team Color",
+    Flag = "HighlightSection_AutoTeamColor",
+    Value = AutoTeamColorEnabled,
+    Callback = function(value)
+        ToggleAutoTeamColor(value)
     end
 })
 
