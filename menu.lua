@@ -15,6 +15,7 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 
 local HighlightEnabled = false
 local TeamCheckEnabled = false
+local autoTeamColorEnabled = false
 local FillColor = Color3.new(1, 0, 0) -- Цвет заполнения
 local OutlineColor = Color3.new(1, 1, 1) -- Цвет обводки
 local FillTransparency = 0.5 -- Прозрачность заполнения
