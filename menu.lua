@@ -146,10 +146,10 @@ function updateHitbox(character)
             end
             humanoidRootPart.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
             humanoidRootPart.Transparency = hitboxTransparency
-            humanoidRootPart.CanCollide = false
+            humanoidRootPart.CanCollide = true
         elseif hitboxTargetPart == "Head" and head then
             if humanoidRootPart then resetHitbox(humanoidRootPart) end
-            if not head:FindFirstChild("OriginalSize") then
+            if not head:FindFirstChild("OriginalSize") or head.Size == head.OriginalSize.Value or head.Transparency == 0 then
                 local hitboxOriginalSize = Instance.new("Vector3Value")
                 hitboxOriginalSize.Name = "OriginalSize"
                 hitboxOriginalSize.Value = head.Size
@@ -158,6 +158,12 @@ function updateHitbox(character)
             head.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
             head.Transparency = hitboxTransparency
             head.CanCollide = false
+            head.CanCollide = false
+            head.Massless = true
+            
+            if humanoidRootPart then
+                humanoidRootPart.CanCollide = false
+            end
         end
     else
         if humanoidRootPart then resetHitbox(humanoidRootPart) end
@@ -185,6 +191,7 @@ function updateAllHitboxes()
         end
     end
 end
+
 
 -- Функции для аимбота
 local function ConvertVector(Vector)
