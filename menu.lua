@@ -312,18 +312,18 @@ Players.PlayerAdded:Connect(function(player)
     end)
 end)
 
-for _, player in pairs(Players:GetPlayers()) do
+for _, player in pairs(players:GetPlayers()) do
     player.CharacterAdded:Connect(function(character)
         if hitboxEnabled then
             expandHitbox(character)
         end
-        ToggleHighlight(HighlightEnabled)
+        toggleHighlight(highlightEnabled)
     end)
     if player.Character then
         if hitboxEnabled then
             expandHitbox(player.Character)
         end
-        ToggleHighlight(HighlightEnabled)
+        toggleHighlight(highlightEnabled)
     end
 end
 
