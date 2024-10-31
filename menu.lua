@@ -3,7 +3,6 @@
 local library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)()
 local Wait = library.subs.Wait
 
--- Загрузка функционала Highlight, Hitbox и Aimbot
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -16,10 +15,10 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 local HighlightEnabled = false
 local TeamCheckEnabled = false
 local AutoTeamColorEnabled = false
-local FillColor = Color3.new(1, 0, 0) -- Цвет заполнения
-local OutlineColor = Color3.new(1, 1, 1) -- Цвет обводки
-local FillTransparency = 0.5 -- Прозрачность заполнения
-local OutlineTransparency = 0.3 -- Прозрачность обводки
+local FillColor = Color3.new(1, 0, 0) 
+local OutlineColor = Color3.new(1, 1, 1) 
+local FillTransparency = 0.5 
+local OutlineTransparency = 0.3 
 
 local hitboxEnabled = false
 local hitboxSize = 5
@@ -63,7 +62,6 @@ getgenv().IAHub.Aimbot = {
 
 local Environment = getgenv().IAHub.Aimbot
 
--- Функция для проверки цвета команды игрока
 local function IsSameTeam(player)
     if TeamCheckEnabled then
         return player.TeamColor == LocalPlayer.TeamColor
@@ -71,7 +69,6 @@ local function IsSameTeam(player)
     return false
 end
 
--- Функция включения/выключения Highlight для всех игроков
 local function ToggleHighlight(enable)
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer then
@@ -102,13 +99,11 @@ local function ToggleHighlight(enable)
     end
 end
 
--- Функция включения/выключения Auto Team Color
 local function ToggleAutoTeamColor(enable)
     AutoTeamColorEnabled = enable
-    ToggleHighlight(HighlightEnabled) -- Обновляем Highlight с учетом новой настройки AutoTeamColor
+    ToggleHighlight(HighlightEnabled) 
 end
 
--- Функции для расширения хитбоксов
 function isPlayerOnSameTeam(player)
     if hitboxTeamCheckEnabled and player.Team == LocalPlayer.Team then
         return true
@@ -193,7 +188,6 @@ function updateAllHitboxes()
 end
 
 
--- Функции для аимбота
 local function ConvertVector(Vector)
 	return Vector2new(Vector.X, Vector.Y)
 end
@@ -347,7 +341,6 @@ ServiceConnections.TypingEndedConnection = UserInputService.TextBoxFocusReleased
 	Typing = false
 end)
 
--- Создание окна интерфейса
 local PepsisWorld = library:CreateWindow({
     Name = "Pepsi's World",
     Themeable = {
@@ -364,7 +357,6 @@ local HighlightSection = GeneralTab:CreateSection({
     Side = "Right"
 })
 
--- Загрузка кнопок и прочего для Highlight
 HighlightSection:AddToggle({
     Name = "Enable Highlight",
     Flag = "HighlightSection_EnableHighlight",
@@ -381,8 +373,8 @@ HighlightSection:AddToggle({
     Value = TeamCheckEnabled,
     Callback = function(value)
         TeamCheckEnabled = value
-        ToggleHighlight(false) -- Отключаем Highlight
-        ToggleHighlight(HighlightEnabled) -- Включаем Highlight заново с обновленными настройками
+        ToggleHighlight(false)
+        ToggleHighlight(HighlightEnabled)
     end
 })
 
@@ -445,7 +437,6 @@ local HitboxSection = GeneralTab:CreateSection({
     Name = "Hitbox Expansion"
 })
 
--- Настройки из интерфейса для Hitbox
 HitboxSection:AddToggle({
     Name = "Enable Hitbox Expansion",
     Flag = "HitboxSection_Enabled",
@@ -508,7 +499,6 @@ local FOVSettingsSection = GeneralTab:CreateSection({
     Name = "FOV Settings"
 })
 
--- Добавление кнопок и настроек для аимбота
 AimbotSettingsSection:AddToggle({
     Name = "Enabled",
     Flag = "AimbotSettings_Enabled",
